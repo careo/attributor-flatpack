@@ -12,6 +12,8 @@ describe Attributor::Flatpack::Config do
         end
         key :widget_factory, String
         key :defaults, String, default: 'Work'
+        key :explode, Attributor::Boolean
+        key :implode, Attributor::Boolean
       end
     end
   end
@@ -76,6 +78,17 @@ describe Attributor::Flatpack::Config do
     let(:data) { Hash.new }
     it 'still work' do
       expect(config.defaults).to eq 'Work'
+    end
+  end
+
+  context 'boolean accessors' do
+    let(:data) { {explode: true, implode: false} }
+    it 'creates handy ? methods' do
+      expect(config.explode).to be(true)
+      expect(config.implode).to be(false)
+
+      expect(config.explode?).to be(true)
+      expect(config.implode?).to be(false)
     end
   end
 end

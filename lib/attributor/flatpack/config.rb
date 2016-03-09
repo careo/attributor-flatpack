@@ -31,6 +31,13 @@ module Attributor
         define_singleton_method(name) do
           get(name)
         end
+
+        attribute = self.class.keys[name]
+        if attribute.type == Attributor::Boolean
+          define_singleton_method(name.to_s + '?') do
+            !!get(name)
+          end
+        end
       end
 
       def define_writer(name)
@@ -38,6 +45,7 @@ module Attributor
         define_singleton_method(name.to_s + '=') do |value|
           set(name, value, context: context)
         end
+
       end
 
       def default_context(key)
