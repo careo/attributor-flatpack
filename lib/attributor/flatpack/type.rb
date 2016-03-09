@@ -1,5 +1,6 @@
 module Attributor
   module Flatpack
-    VERSION = '0.1.0'
+    class Type < Attributor::Hash
+    end
   end
 end

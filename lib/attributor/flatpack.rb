@@ -1,7 +1,7 @@
-require "attributor/flatpack/version"
+require 'attributor/flatpack/version'
+require 'attributor/flatpack/type'
 
 module Attributor
   module Flatpack
-    # Your code goes here...
   end
 end
