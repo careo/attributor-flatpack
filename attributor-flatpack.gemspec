@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email = ['dane.jensen@gmail.com']
 
   spec.summary = 'Attributor type for loading configuration data'
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage = "https://github.com/careo/attributor-flatpack"
   spec.license = 'MIT'
 
   spec.files = `git ls-files -z`

@@ -53,7 +53,7 @@ module Attributor
 
       def get(key, context: default_context(key))
         unless (attribute = self.class.keys[key])
-          raise UndefinedKey, key, context
+          raise UndefinedKey.new(key, context)
         end
 
         @contents[key] ||= _get(key, attribute: attribute, context: context)

@@ -19,6 +19,7 @@ describe Attributor::Flatpack::Config do
   end
 
   let(:data) do
+    {}
   end
 
   subject(:config) { type.load(data) }
@@ -90,5 +91,10 @@ describe Attributor::Flatpack::Config do
       expect(config.explode?).to be(true)
       expect(config.implode?).to be(false)
     end
+  end
+
+  it 'retrieving an undefined key raises an exception' do
+    expect { config.get('missing') }.to \
+      raise_error(Attributor::Flatpack::UndefinedKey)
   end
 end

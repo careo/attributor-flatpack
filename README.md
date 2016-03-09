@@ -3,9 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/careo/attributor-flatpack/badges/gpa.svg)](https://codeclimate.com/github/careo/attributor-flatpack)
 [![Test Coverage](https://codeclimate.com/github/careo/attributor-flatpack/badges/coverage.svg)](https://codeclimate.com/github/careo/attributor-flatpack/coverage)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/attributor/flatpack`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This library provides an Attributor type, Attributor::Flatpack::Config, for loading messy data from sources like the ENV hash. Based on the Go [flatpack](https://github.com/xeger/flatpack) library.
 
 ## Installation
 
@@ -25,7 +23,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Define your config type, similarly to an `Attributor::Hash`:
+
+```ruby
+class SampleConfig < Attributor::Flatpack::Config
+  keys do
+    key :rack_env, String
+    key :database do
+      key :host, String
+      key :username, String
+      key :password, String
+    end
+    key :web do
+      key :maxconn, Integer
+      key :workers, Integer
+    end
+  end
+end
+```
+
+Create an instance of it from a given input hash:
+```ruby
+config = SimpleConfig.load(ENV)
+```
+
+And then simply use the attributes defined to retrieve values:
+```ruby
+config.rack_env
+# => development
+config.database.host
+# => localhost:9160
+```
 
 ## Development
 
