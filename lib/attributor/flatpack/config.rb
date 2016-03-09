@@ -2,7 +2,6 @@ module Attributor
   module Flatpack
     class Config < Attributor::Hash
       @key_type = Symbol
-      @key_attribute = Attribute.new(@key_attribute)
 
       def self.inherited(klass)
         super
