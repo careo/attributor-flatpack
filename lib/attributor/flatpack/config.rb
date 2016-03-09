@@ -78,7 +78,7 @@ module Attributor
           attribute.load(top, context).merge!(subselect(key))
         else
           value = fetch(key) do
-            #raise "couldn't find #{key.inspect} anywhere"
+            # raise "couldn't find #{key.inspect} anywhere"
             nil
           end
           attribute.load(value, context)
@@ -133,31 +133,28 @@ module Attributor
       end
 
       # shamelessly copied from Attributor::Model's #validate :(
-      def validate(context=Attributor::DEFAULT_ROOT_CONTEXT)
-        raise AttributorException, "validation conflict" if @validating
+      def validate(context = Attributor::DEFAULT_ROOT_CONTEXT)
+        raise AttributorException, 'validation conflict' if @validating
         @validating = true
 
         context = [context] if context.is_a? ::String
 
-        ret = self.class.attributes.each_with_object(Array.new) do |(sub_attribute_name, sub_attribute), errors|
-          sub_context = self.class.generate_subcontext(context,sub_attribute_name)
+        ret = self.class.attributes.each_with_object([]) do |(sub_attribute_name, sub_attribute), errors|
+          sub_context = self.class.generate_subcontext(context, sub_attribute_name)
 
-          value = self.__send__(sub_attribute_name)
-          if value.respond_to?(:validating) # really, it's a thing with sub-attributes
-            next if value.validating
-          end
+          value = __send__(sub_attribute_name)
+          next if value.respond_to?(:validating) && value.validating # really, it's a thing with sub-attributes
 
           errors.push *sub_attribute.validate(value, sub_context)
         end
         self.class.requirements.each_with_object(ret) do |req, errors|
-          validation_errors = req.validate( @contents , context)
+          validation_errors = req.validate(@contents, context)
           errors.push *validation_errors unless validation_errors.empty?
         end
         ret
       ensure
         @validating = false
       end
-
     end
   end
 end
