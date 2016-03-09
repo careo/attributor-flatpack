@@ -68,15 +68,15 @@ module Attributor
           raise UndefinedKey, key, context
         end
 
-        @loaded[key] ||= _get(key, attribute: attribute)
+        @loaded[key] ||= _get(key, attribute: attribute, context: context)
       end
 
-      def _get(key, attribute:)
+      def _get(key, attribute:, context:)
         if attribute.type < Attributor::Flatpack::Config
           top = fetch(key) do
             {}
           end
-          attribute.load(top).merge!(subselect(key))
+          attribute.load(top, context).merge!(subselect(key))
         else
           value = fetch(key) do
             raise "couldn't find #{key.inspect} anywhere"
