@@ -1,6 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.2
 Style/Documentation:
+  Enabled: false
   Exclude:
     - lib/attributor/flatpack/version.rb
     - lib/attributor/flatpack.rb
