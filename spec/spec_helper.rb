@@ -5,3 +5,6 @@ require 'rspec/its'
 
 require 'pry'
 require 'pry-byebug'
+
+require 'coveralls'
+Coveralls.wear!
