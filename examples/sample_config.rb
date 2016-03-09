@@ -1,5 +1,7 @@
 require 'pp'
 require 'bundler/setup'
+require 'pry'
+require 'pry-byebug'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'attributor/flatpack'
@@ -32,6 +34,16 @@ env = {
 config = SampleConfig.load(env)
 puts "errors: #{config.validate}"
 # => errors: []
+
+puts config.pretty_print
+# =>
+#   rack_env="sekrit-lair"
+#   database.host="postgres://localhost/operation_doomsday"
+#   database.username="postgres"
+#   database.password="123"
+#   web.maxconn=10
+#   web.workers=1000
+#   world_domination=true
 
 pp config.dump
 # =>

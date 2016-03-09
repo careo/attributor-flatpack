@@ -155,6 +155,19 @@ module Attributor
       ensure
         @validating = false
       end
+
+      def pretty_print(context: [])
+        self.collect do |k,v|
+          sub_context = context + [k]
+          case v
+          when Attributor::Flatpack::Config
+            v.pretty_print(context: context | [k])
+          else
+            "#{sub_context.join('.')}=#{v.inspect}"
+          end
+        end.flatten
+      end
+
     end
   end
 end
