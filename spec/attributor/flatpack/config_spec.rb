@@ -82,7 +82,7 @@ describe Attributor::Flatpack::Config do
   end
 
   context 'boolean accessors' do
-    let(:data) { {explode: true, implode: false} }
+    let(:data) { { explode: true, implode: false } }
     it 'creates handy ? methods' do
       expect(config.explode).to be(true)
       expect(config.implode).to be(false)

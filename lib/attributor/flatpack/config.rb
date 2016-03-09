@@ -45,7 +45,6 @@ module Attributor
         define_singleton_method(name.to_s + '=') do |value|
           set(name, value, context: context)
         end
-
       end
 
       def default_context(key)
