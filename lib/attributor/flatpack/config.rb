@@ -78,7 +78,8 @@ module Attributor
           attribute.load(top, context).merge!(subselect(key))
         else
           value = fetch(key) do
-            raise "couldn't find #{key.inspect} anywhere"
+            #raise "couldn't find #{key.inspect} anywhere"
+            nil
           end
           attribute.load(value, context)
         end

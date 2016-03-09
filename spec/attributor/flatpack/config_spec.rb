@@ -11,6 +11,7 @@ describe Attributor::Flatpack::Config do
           key :bench, String
         end
         key :widget_factory, String
+        key :defaults, String, default: 'Work'
       end
     end
   end
@@ -68,6 +69,13 @@ describe Attributor::Flatpack::Config do
     end
     it 'fetches packed names still' do
       expect(config.foo.bench).to eq 'Bench of the Foos'
+    end
+  end
+
+  context 'default values' do
+    let(:data) { Hash.new }
+    it 'still work' do
+      expect(config.defaults).to eq 'Work'
     end
   end
 end
