@@ -76,13 +76,18 @@ describe Attributor::Flatpack::Config do
   end
 
   context 'default values' do
-    let(:data) { Hash.new }
     it 'still work' do
       expect(config.defaults).to eq 'Work'
     end
   end
 
-  context 'boolean accessors' do
+  context 'setting values' do
+    it 'works with defined keys' do
+      config.baz = 'New Baz'
+      expect(config.baz).to eq 'New Baz'
+    end
+  end
+  context 'boolean readers' do
     let(:data) { { explode: true, implode: false } }
     it 'creates handy ? methods' do
       expect(config.explode).to be(true)

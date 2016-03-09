@@ -74,6 +74,16 @@ module Attributor
         end
       end
 
+      def set(key, value, context: default_context(key))
+        attribute = self.class.keys.fetch key do
+          raise UndefinedKey.new(key, [key])
+        end
+
+        loaded = attribute.load(value, context)
+        @contents[key] = loaded
+        @raw[key] = loaded
+      end
+
       # search @raw for key
       def fetch(key)
         return @raw[key] if @raw.key?(key)
