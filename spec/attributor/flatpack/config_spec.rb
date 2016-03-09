@@ -18,14 +18,10 @@ describe Attributor::Flatpack::Config do
     end
   end
 
-  let(:data) do
-    {}
-  end
-
+  let(:data) { { :baz => 'Baz', 'bar' => 'Bar' } }
   subject(:config) { type.load(data) }
 
   context 'simply loading' do
-    let(:data) { { :baz => 'Baz', 'bar' => 'Bar' } }
     it 'loads symbols' do
       expect(config.baz).to eq 'Baz'
     end
@@ -101,5 +97,26 @@ describe Attributor::Flatpack::Config do
   it 'retrieving an undefined key raises an exception' do
     expect { config.get('missing') }.to \
       raise_error(Attributor::Flatpack::UndefinedKey)
+  end
+
+  context 'validating definitions' do
+    it 'ensures defined keys are symbols' do
+      type = Class.new(Attributor::Flatpack::Config) do
+        keys do
+          key 'invalid string', String
+        end
+      end
+      expect { type.attributes }.to raise_error(ArgumentError)
+    end
+  end
+
+  it 'supports [] and []=' do
+    expect(config[:baz]).to eq 'Baz'
+    config[:baz] = 'New Baz'
+    expect(config[:baz]).to eq 'New Baz'
+  end
+
+  it 'returns an empty array for no errors' do
+    expect(config.validate).to eq []
   end
 end

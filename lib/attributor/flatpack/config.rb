@@ -89,13 +89,7 @@ module Attributor
         return @raw[key] if @raw.key?(key)
 
         _found_key, found_value = @raw.find do |(k, _v)|
-          case k
-          when ::Symbol, ::String
-            k.to_s.casecmp(key.to_s) == 0
-          else
-            p 'dunno what this is'
-            false
-          end
+          k.to_s.casecmp(key.to_s) == 0
         end
 
         return found_value if found_value
