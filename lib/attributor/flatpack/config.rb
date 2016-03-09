@@ -1,6 +1,11 @@
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
+      # FIXME: this is not the way to fix this. Really we should add finalize! to Models.
+      undef :timeout
+      undef :format
+      undef :test rescue nil
+
       @key_type = Symbol
 
       def self.inherited(klass)
