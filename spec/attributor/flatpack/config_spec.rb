@@ -21,7 +21,7 @@ describe Attributor::Flatpack::Config do
   subject(:config) { type.load(data) }
 
   context 'simply loading' do
-    let(:data) { {:baz => 'Baz', 'bar' => 'Bar'} }
+    let(:data) { { :baz => 'Baz', 'bar' => 'Bar' } }
     it 'loads symbols' do
       expect(config.baz).to eq 'Baz'
     end
@@ -31,7 +31,7 @@ describe Attributor::Flatpack::Config do
   end
 
   context 'case insensitivity' do
-    let(:data) { {"BAZ" => 'Baz', :Bar => 'Bar'} }
+    let(:data) { { 'BAZ' => 'Baz', :Bar => 'Bar' } }
     it 'loads from uppercase' do
       expect(config.baz).to eq 'Baz'
     end
@@ -41,7 +41,12 @@ describe Attributor::Flatpack::Config do
   end
 
   context 'unpacking names' do
-    let(:data) { {'FOO_BAR' => 'Bar of Foos', "WIDGET_FACTORY" => "Factory of Widgets"} }
+    let(:data) do
+      {
+        'FOO_BAR' => 'Bar of Foos',
+        'WIDGET_FACTORY' => 'Factory of Widgets'
+      }
+    end
     it 'unpacks names' do
       expect(config.foo.bar).to eq 'Bar of Foos'
     end
@@ -54,7 +59,7 @@ describe Attributor::Flatpack::Config do
     let(:data) do
       {
         :foo => '{"bar": "Serialized Bar"}',
-        'FOO_BENCH' => "Bench of the Foos"
+        'FOO_BENCH' => 'Bench of the Foos'
       }
     end
 
@@ -64,7 +69,5 @@ describe Attributor::Flatpack::Config do
     it 'fetches packed names still' do
       expect(config.foo.bench).to eq 'Bench of the Foos'
     end
-
   end
-
 end

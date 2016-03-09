@@ -4,16 +4,13 @@ module Attributor
       @key_type = Symbol
       @value_attribute = Attribute.new(@value_type)
 
-
-
-
       def self.inherited(klass)
         super
         klass.options[:dsl_compiler] = ConfigDSLCompiler
       end
 
-      def self.from_hash(object,context, recurse: false)
-        config = self.new(object)
+      def self.from_hash(object, _context, **_opts)
+        config = new(object)
         config
       end
 
@@ -22,7 +19,7 @@ module Attributor
         @loaded = {}
       end
 
-      def respond_to_missing?(name,*)
+      def respond_to_missing?(name, *)
         attribute_name = name.to_s
         attribute_name.chomp!('=')
 
@@ -37,53 +34,54 @@ module Attributor
         sym = attribute_name.to_sym
 
         if self.class.attributes.key?(sym)
-          self.define_accessors(sym)
-          return self.__send__(name, *args)
+          define_accessors(sym)
+          return __send__(name, *args)
         end
 
         super
       end
 
       def define_accessors(name)
-        self.define_reader(name)
-        self.define_writer(name)
+        define_reader(name)
+        define_writer(name)
       end
 
       def define_reader(name)
         define_singleton_method(name) do
-          self.get(name)
+          get(name)
         end
       end
 
       def define_writer(name)
-        context = ["assignment","of(#{name})"].freeze
-        define_singleton_method(name.to_s + "=") do |value|
-          self.set(name, value, context: context)
+        context = ['assignment', "of(#{name})"].freeze
+        define_singleton_method(name.to_s + '=') do |value|
+          set(name, value, context: context)
         end
       end
 
-      def get(key, context: self.generate_subcontext(Attributor::DEFAULT_ROOT_CONTEXT,key))
-        @loaded[key] ||= begin
-          unless (attribute = self.class.keys[key])
-            raise LoadError, "Undefined key received: #{key.inspect} for #{Attributor.humanize_context(context)}"
+      def default_context(key)
+        generate_subcontext(Attributor::DEFAULT_ROOT_CONTEXT, key)
+      end
+
+      def get(key, context: default_context(key))
+        unless (attribute = self.class.keys[key])
+          raise UndefinedKey, key, context
+        end
+
+        @loaded[key] ||= _get(key, attribute: attribute)
+      end
+
+      def _get(key, attribute:)
+        if attribute.type < Attributor::Flatpack::Config
+          top = fetch(key) do
+            {}
           end
-
-
-          if attribute.type < Attributor::Flatpack::Config
-            top = fetch(key) do
-              {}
-            end
-
-            start = attribute.load(top)
-            subset = self.subselect(key)
-
-            start.merge!(subset)
-          else
-            value = fetch(key) do
-              #raise "couldn't find #{key.inspect} anywhere"
-            end
-            attribute.load(value, context)
+          attribute.load(top).merge!(subselect(key))
+        else
+          value = fetch(key) do
+            raise "couldn't find #{key.inspect} anywhere"
           end
+          attribute.load(value, context)
         end
       end
 
@@ -91,12 +89,10 @@ module Attributor
       def fetch(key)
         return @raw[key] if @raw.key?(key)
 
-        _found_key, found_value = @raw.find do |(k,_v)|
+        _found_key, found_value = @raw.find do |(k, _v)|
           case k
-          when ::Symbol
-            k.to_s.downcase == key.to_s.downcase
-          when ::String
-            key.to_s.downcase == k.downcase
+          when ::Symbol, ::String
+            k.to_s.casecmp(key.to_s) == 0
           else
             p 'dunno what this is'
             false
@@ -111,20 +107,20 @@ module Attributor
       def subselect(prefix)
         prefix_match = /^#{prefix.to_s}_?(.*)/i
 
-        selected = @raw.collect do |(k,v)|
+        selected = @raw.collect do |(k, v)|
           if (match = prefix_match.match(k))
-            [match[1],v]
+            [match[1], v]
           end
         end.compact
         ::Hash[selected]
       end
 
       def [](k)
-        self.get k
+        get k
       end
 
-      def []=(k,v)
-        self.set k, v
+      def []=(k, v)
+        set k, v
       end
 
       def merge!(other)
@@ -135,7 +131,6 @@ module Attributor
 
         self
       end
-
     end
   end
 end
