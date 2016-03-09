@@ -2,7 +2,7 @@ module Attributor
   module Flatpack
     class Config < Attributor::Hash
       @key_type = Symbol
-      @value_attribute = Attribute.new(@value_type)
+      @key_attribute = Attribute.new(@key_attribute)
 
       def self.inherited(klass)
         super
@@ -16,7 +16,7 @@ module Attributor
 
       def initialize(data = nil)
         @raw = data
-        @loaded = {}
+        @contents = {}
       end
 
       def respond_to_missing?(name, *)
@@ -68,7 +68,7 @@ module Attributor
           raise UndefinedKey, key, context
         end
 
-        @loaded[key] ||= _get(key, attribute: attribute, context: context)
+        @contents[key] ||= _get(key, attribute: attribute, context: context)
       end
 
       def _get(key, attribute:, context:)
@@ -126,7 +126,7 @@ module Attributor
       def merge!(other)
         # Not sure if we need to nuke the memozied set of loaded stuff here
         # or not... but it sounds like a good idea.
-        @loaded = {}
+        @contents = {}
         @raw.merge!(other)
 
         self
