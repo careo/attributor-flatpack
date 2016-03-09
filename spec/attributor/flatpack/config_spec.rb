@@ -8,6 +8,7 @@ describe Attributor::Flatpack::Config do
         key :bar, String
         key :foo do
           key :bar, String
+          key :bench, String
         end
         key :widget_factory, String
       end
@@ -49,5 +50,21 @@ describe Attributor::Flatpack::Config do
     end
   end
 
+  context 'merging names' do
+    let(:data) do
+      {
+        :foo => '{"bar": "Serialized Bar"}',
+        'FOO_BENCH' => "Bench of the Foos"
+      }
+    end
+
+    it 'loads serialized stuff' do
+      expect(config.foo.bar).to eq 'Serialized Bar'
+    end
+    it 'fetches packed names still' do
+      expect(config.foo.bench).to eq 'Bench of the Foos'
+    end
+
+  end
 
 end

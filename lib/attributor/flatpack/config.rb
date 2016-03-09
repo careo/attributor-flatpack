@@ -4,6 +4,9 @@ module Attributor
       @key_type = Symbol
       @value_attribute = Attribute.new(@value_type)
 
+
+
+
       def self.inherited(klass)
         super
         klass.options[:dsl_compiler] = ConfigDSLCompiler
@@ -66,17 +69,22 @@ module Attributor
           end
 
 
-          value = fetch(key) do
-            if attribute.type < Attributor::Flatpack::Config
-              self.subselect(key)
-            else
-              raise "couldn't find #{key.inspect} anywhere"
+          if attribute.type < Attributor::Flatpack::Config
+            top = fetch(key) do
+              {}
             end
+
+            start = attribute.load(top)
+            subset = self.subselect(key)
+
+            start.merge!(subset)
+          else
+            value = fetch(key) do
+              #raise "couldn't find #{key.inspect} anywhere"
+            end
+            attribute.load(value, context)
           end
-
-          attribute.load(value, context)
         end
-
       end
 
       # search @raw for key
@@ -117,6 +125,15 @@ module Attributor
 
       def []=(k,v)
         self.set k, v
+      end
+
+      def merge!(other)
+        # Not sure if we need to nuke the memozied set of loaded stuff here
+        # or not... but it sounds like a good idea.
+        @loaded = {}
+        @raw.merge!(other)
+
+        self
       end
 
     end
