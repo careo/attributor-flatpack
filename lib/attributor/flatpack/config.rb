@@ -1,11 +1,6 @@
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
-      # FIXME: this is not the way to fix this. Really we should add finalize! to Models.
-      undef :timeout
-      undef :format
-      undef :test rescue nil
-
       @key_type = Symbol
 
       def self.inherited(klass)
@@ -21,28 +16,10 @@ module Attributor
       def initialize(data = nil)
         @raw = data
         @contents = {}
-      end
 
-      def respond_to_missing?(name, *)
-        attribute_name = name.to_s
-        attribute_name.chomp!('=')
-
-        return true if self.class.attributes.key?(attribute_name.to_sym)
-        super
-      end
-
-      def method_missing(name, *args)
-        attribute_name = name.to_s
-        attribute_name.chomp!('=')
-
-        sym = attribute_name.to_sym
-
-        if self.class.attributes.key?(sym)
-          define_accessors(sym)
-          return __send__(name, *args)
+        self.class.keys.each do |k,_v|
+          self.define_accessors(k)
         end
-
-        super
       end
 
       def define_accessors(name)
