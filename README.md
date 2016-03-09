@@ -1,4 +1,5 @@
 # Attributor::Flatpack
+[![Gem Version](https://badge.fury.io/rb/attributor-flatpack.svg)](https://badge.fury.io/rb/attributor-flatpack)
 [![Build Status](https://travis-ci.org/careo/attributor-flatpack.svg?branch=master)](https://travis-ci.org/careo/attributor-flatpack)
 [![Code Climate](https://codeclimate.com/github/careo/attributor-flatpack/badges/gpa.svg)](https://codeclimate.com/github/careo/attributor-flatpack)
 [![Test Coverage](https://codeclimate.com/github/careo/attributor-flatpack/badges/coverage.svg)](https://codeclimate.com/github/careo/attributor-flatpack/coverage)
