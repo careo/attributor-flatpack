@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.require
 
-class ConfigHash  < Attributor::Hash
+class ConfigHash < Attributor::Hash
   keys allow_extra: true do
     key 'HOME', String
     key 'PATH', String

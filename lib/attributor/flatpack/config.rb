@@ -28,14 +28,16 @@ module Attributor
       end
 
       def define_reader(name)
+        attribute = self.class.keys[name]
+        context = default_context(name)
+
         define_singleton_method(name) do
-          get(name)
+          get(name, attribute: attribute, context: context)
         end
 
-        attribute = self.class.keys[name]
         if attribute.type == Attributor::Boolean
           define_singleton_method(name.to_s + '?') do
-            !!get(name)
+            !!get(name, attribute: attribute, context: context)
           end
         end
       end
@@ -51,10 +53,8 @@ module Attributor
         generate_subcontext(Attributor::DEFAULT_ROOT_CONTEXT, key)
       end
 
-      def get(key, context: default_context(key))
-        unless (attribute = self.class.keys[key])
-          raise UndefinedKey.new(key, context)
-        end
+      def get(key, context: default_context(key), attribute: self.class.keys[key])
+        raise UndefinedKey.new(key, context) unless attribute
 
         @contents[key] ||= _get(key, attribute: attribute, context: context)
       end

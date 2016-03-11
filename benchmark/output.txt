@@ -1,27 +1,27 @@
 ruby 2.2.3p173 (2015-08-18 revision 51636) [x86_64-darwin14]
 Warming up --------------------------------------
-           constants    93.609k i/100ms
-                 ENV    28.819k i/100ms
-    Attributor::Hash    54.250k i/100ms
-Attributor::Flatpack    16.933k i/100ms
-   Attributor::Model    82.850k i/100ms
-         Ruby Struct    86.171k i/100ms
-                PORO    92.499k i/100ms
+           constants    93.664k i/100ms
+                 ENV    24.570k i/100ms
+    Attributor::Hash    52.668k i/100ms
+Attributor::Flatpack    52.263k i/100ms
+   Attributor::Model    79.844k i/100ms
+         Ruby Struct    85.377k i/100ms
+                PORO    82.365k i/100ms
 Calculating -------------------------------------
-           constants     13.689M (±10.0%) i/s -     67.679M
-                 ENV    620.263k (± 7.5%) i/s -      3.084M
-    Attributor::Hash      2.019M (±11.3%) i/s -      9.928M
-Attributor::Flatpack    246.617k (±13.7%) i/s -      1.202M
-   Attributor::Model      4.259M (±10.8%) i/s -     20.961M
-         Ruby Struct      6.149M (±12.7%) i/s -     29.988M
-                PORO      7.802M (±11.6%) i/s -     38.387M
+           constants     13.543M (±10.8%) i/s -     66.689M
+                 ENV    681.551k (± 8.9%) i/s -      3.391M
+    Attributor::Hash      2.084M (± 6.5%) i/s -     10.376M
+Attributor::Flatpack      1.633M (± 5.3%) i/s -      8.153M
+   Attributor::Model      4.681M (± 6.7%) i/s -     23.314M
+         Ruby Struct      6.468M (± 7.3%) i/s -     32.187M
+                PORO      8.423M (± 7.0%) i/s -     41.924M
 
 Comparison:
-           constants: 13688749.0 i/s
-                PORO:  7802046.1 i/s - 1.75x slower
-         Ruby Struct:  6148579.3 i/s - 2.23x slower
-   Attributor::Model:  4259160.6 i/s - 3.21x slower
-    Attributor::Hash:  2019289.6 i/s - 6.78x slower
-                 ENV:   620263.2 i/s - 22.07x slower
-Attributor::Flatpack:   246616.5 i/s - 55.51x slower
+           constants: 13543356.2 i/s
+                PORO:  8422557.3 i/s - 1.61x slower
+         Ruby Struct:  6467625.6 i/s - 2.09x slower
+   Attributor::Model:  4680600.5 i/s - 2.89x slower
+    Attributor::Hash:  2084217.5 i/s - 6.50x slower
+Attributor::Flatpack:  1632932.0 i/s - 8.29x slower
+                 ENV:   681551.4 i/s - 19.87x slower
 
