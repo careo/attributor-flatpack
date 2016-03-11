@@ -1,0 +1,27 @@
+ruby 2.2.3p173 (2015-08-18 revision 51636) [x86_64-darwin14]
+Warming up --------------------------------------
+           constants    93.609k i/100ms
+                 ENV    28.819k i/100ms
+    Attributor::Hash    54.250k i/100ms
+Attributor::Flatpack    16.933k i/100ms
+   Attributor::Model    82.850k i/100ms
+         Ruby Struct    86.171k i/100ms
+                PORO    92.499k i/100ms
+Calculating -------------------------------------
+           constants     13.689M (±10.0%) i/s -     67.679M
+                 ENV    620.263k (± 7.5%) i/s -      3.084M
+    Attributor::Hash      2.019M (±11.3%) i/s -      9.928M
+Attributor::Flatpack    246.617k (±13.7%) i/s -      1.202M
+   Attributor::Model      4.259M (±10.8%) i/s -     20.961M
+         Ruby Struct      6.149M (±12.7%) i/s -     29.988M
+                PORO      7.802M (±11.6%) i/s -     38.387M
+
+Comparison:
+           constants: 13688749.0 i/s
+                PORO:  7802046.1 i/s - 1.75x slower
+         Ruby Struct:  6148579.3 i/s - 2.23x slower
+   Attributor::Model:  4259160.6 i/s - 3.21x slower
+    Attributor::Hash:  2019289.6 i/s - 6.78x slower
+                 ENV:   620263.2 i/s - 22.07x slower
+Attributor::Flatpack:   246616.5 i/s - 55.51x slower
+
