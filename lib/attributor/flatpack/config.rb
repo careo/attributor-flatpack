@@ -1,10 +1,21 @@
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
+      DEFAULT_SEPARATOR = '_'
       @key_type = Symbol
+
+      class << self
+        def separator(sep=nil)
+          return @separator unless sep
+          @separator = sep
+        end
+      end      
 
       def self.inherited(klass)
         super
+        klass.instance_eval do
+          @separator = Attributor::Flatpack::Config::DEFAULT_SEPARATOR
+        end
         klass.options[:dsl_compiler] = ConfigDSLCompiler
       end
 
@@ -98,7 +109,7 @@ module Attributor
       end
 
       def subselect(prefix)
-        prefix_match = /^#{prefix.to_s}_?(.*)/i
+        prefix_match = /^#{prefix.to_s}#{self.class.separator}?(.*)/i
 
         selected = @raw.collect do |(k, v)|
           if (match = prefix_match.match(k))
