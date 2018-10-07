@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Attributor::Flatpack::Config do
+describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
   let(:type) do
     Class.new(Attributor::Flatpack::Config) do
       keys do
@@ -81,7 +81,7 @@ describe Attributor::Flatpack::Config do
       expect(config.widget_factory).to eq 'Factory of Widgets'
     end
   end
-  
+
   context 'merging names' do
     let(:data) do
       {

@@ -1,15 +1,16 @@
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
-      DEFAULT_SEPARATOR = '_'
+      DEFAULT_SEPARATOR = '_'.freeze
       @key_type = Symbol
 
       class << self
-        def separator(sep=nil)
+        def separator(sep = nil)
           return @separator unless sep
+
           @separator = sep
         end
-      end      
+      end
 
       def self.inherited(klass)
         super
@@ -46,10 +47,10 @@ module Attributor
           get(name, attribute: attribute, context: context)
         end
 
-        if attribute.type == Attributor::Boolean
-          define_singleton_method(name.to_s + '?') do
-            !!get(name, attribute: attribute, context: context)
-          end
+        return unless attribute.type == Attributor::Boolean
+
+        define_singleton_method(name.to_s + '?') do
+          !!get(name, attribute: attribute, context: context)
         end
       end
 
@@ -100,7 +101,7 @@ module Attributor
         return @raw[key] if @raw.key?(key)
 
         _found_key, found_value = @raw.find do |(k, _v)|
-          k.to_s.casecmp(key.to_s) == 0
+          k.to_s.casecmp(key.to_s).zero?
         end
 
         return found_value if found_value
@@ -119,12 +120,12 @@ module Attributor
         ::Hash[selected]
       end
 
-      def [](k)
-        get k
+      def [](key)
+        get key
       end
 
-      def []=(k, v)
-        set k, v
+      def []=(key, val)
+        set key, val
       end
 
       def merge!(other)

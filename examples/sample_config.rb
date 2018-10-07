@@ -3,7 +3,7 @@ require 'bundler/setup'
 require 'pry'
 require 'pry-byebug'
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'attributor/flatpack'
 
 class SampleConfig < Attributor::Flatpack::Config

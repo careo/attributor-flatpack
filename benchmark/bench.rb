@@ -43,7 +43,7 @@ poro = Poro.new(HOME, PATH)
 
 puts RUBY_DESCRIPTION
 
-Benchmark.ips do |x|
+Benchmark.ips do |x| # rubocop:disable Metrics/BlockLength
   x.report 'constants' do |i|
     i.times do
       HOME == PATH
