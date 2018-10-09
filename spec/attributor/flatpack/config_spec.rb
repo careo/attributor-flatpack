@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Attributor::Flatpack::Config do
+describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
   let(:type) do
     Class.new(Attributor::Flatpack::Config) do
       keys do
@@ -44,6 +44,33 @@ describe Attributor::Flatpack::Config do
     let(:data) do
       {
         'FOO_BAR' => 'Bar of Foos',
+        'WIDGET_FACTORY' => 'Factory of Widgets'
+      }
+    end
+    it 'unpacks names' do
+      expect(config.foo.bar).to eq 'Bar of Foos'
+    end
+    it 'still supports packed names' do
+      expect(config.widget_factory).to eq 'Factory of Widgets'
+    end
+  end
+
+  context 'unpacking names using a custom separator' do
+    let(:type) do
+      Class.new(Attributor::Flatpack::Config) do
+        separator '.'
+        keys do
+          key :foo do
+            key :bar, String
+          end
+          key :widget_factory, String
+        end
+      end
+    end
+
+    let(:data) do
+      {
+        'FOO.BAR' => 'Bar of Foos',
         'WIDGET_FACTORY' => 'Factory of Widgets'
       }
     end
