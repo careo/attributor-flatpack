@@ -9,6 +9,11 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         key :foo do
           key :bar, String
           key :bench, String
+          key :deep do
+            key :deeper do
+              key :deepest, String
+            end
+          end
         end
         key :widget_factory, String
         key :defaults, String, default: 'Work'
@@ -44,17 +49,20 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     let(:data) do
       {
         'FOO_BAR' => 'Bar of Foos',
-        'WIDGET_FACTORY' => 'Factory of Widgets'
+        'WIDGET_FACTORY' => 'Factory of Widgets',
+        'FOO_DEEP_DEEPER_DEEPEST' => 'down there'
       }
     end
     it 'unpacks names' do
       expect(config.foo.bar).to eq 'Bar of Foos'
+      expect(config.foo.deep.deeper.deepest).to eq 'down there'
     end
     it 'still supports packed names' do
       expect(config.widget_factory).to eq 'Factory of Widgets'
     end
   end
 
+  # rubocop: disable Metrics/BlockLength
   context 'unpacking names using a custom separator' do
     let(:type) do
       Class.new(Attributor::Flatpack::Config) do
@@ -62,19 +70,27 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         keys do
           key :foo do
             key :bar, String
+            key :deep do
+              key :deeper do
+                key :deepest, String
+              end
+            end
           end
           key :widget_factory, String
         end
       end
     end
+    # rubocop: enable Metrics/BlockLength
 
     let(:data) do
       {
         'FOO.BAR' => 'Bar of Foos',
-        'WIDGET_FACTORY' => 'Factory of Widgets'
+        'WIDGET_FACTORY' => 'Factory of Widgets',
+        'FOO.DEEP.DEEPER.DEEPEST' => 'down there'
       }
     end
     it 'unpacks names' do
+      expect(config.foo.deep.deeper.deepest).to eq 'down there'
       expect(config.foo.bar).to eq 'Bar of Foos'
     end
     it 'still supports packed names' do
