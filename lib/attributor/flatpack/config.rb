@@ -1,7 +1,7 @@
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
-      DEFAULT_SEPARATOR = '_'.freeze
+      @separator = '_'.freeze
       @key_type = Symbol
 
       class << self
@@ -14,8 +14,9 @@ module Attributor
 
       def self.inherited(klass)
         super
+        sep = self.separator
         klass.instance_eval do
-          @separator = Attributor::Flatpack::Config::DEFAULT_SEPARATOR
+          @separator = sep
         end
         klass.options[:dsl_compiler] = ConfigDSLCompiler
       end
@@ -42,7 +43,6 @@ module Attributor
       def define_reader(name)
         attribute = self.class.keys[name]
         context = default_context(name)
-
         define_singleton_method(name) do
           get(name, attribute: attribute, context: context)
         end
