@@ -7,7 +7,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         key :baz, String
         key :bar, String
         key :foo do
-          key :bar, String
+          key :bar, String, required: true
           key :bench, String
           key :deep do
             key :deeper do
@@ -23,7 +23,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  let(:data) { { :baz => 'Baz', 'bar' => 'Bar' } }
+  let(:data) { { :baz => 'Baz', 'bar' => 'Bar', :foo => { :bar => 'Foobar'}} }
   subject(:config) { type.load(data) }
 
   context 'simply loading' do
@@ -156,6 +156,16 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     expect(config[:baz]).to eq 'Baz'
     config[:baz] = 'New Baz'
     expect(config[:baz]).to eq 'New Baz'
+  end
+
+  context '.example' do
+    subject(:example) { type.example }
+    it 'generates objects that have dotted methods' do
+      expect(example.foo.bar).to be_kind_of(String)
+    end
+    it 'generates objects that have bracket methods' do
+      expect(example[:foo][:bar]).to be_kind_of(String)
+    end
   end
 
   it 'returns an empty array for no errors' do
