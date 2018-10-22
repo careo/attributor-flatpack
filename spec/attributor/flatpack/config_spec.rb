@@ -7,7 +7,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         key :baz, String
         key :bar, String
         key :foo do
-          key :bar, String
+          key :bar, String, required: true
           key :bench, String
           key :deep do
             key :deeper do
@@ -23,7 +23,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  let(:data) { { :baz => 'Baz', 'bar' => 'Bar' } }
+  let(:data) { { :baz => 'Baz', 'bar' => 'Bar', :foo => { bar: 'Foobar' } } }
   subject(:config) { type.load(data) }
 
   context 'simply loading' do
@@ -72,7 +72,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
             key :bar, String
             key :deep do
               key :deeper do
-                key :deepest, String
+                key :deepest_enabled, String
               end
             end
           end
@@ -81,16 +81,15 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       end
     end
     # rubocop: enable Metrics/BlockLength
-
     let(:data) do
       {
         'FOO.BAR' => 'Bar of Foos',
         'WIDGET_FACTORY' => 'Factory of Widgets',
-        'FOO.DEEP.DEEPER.DEEPEST' => 'down there'
+        'FOO.DEEP.DEEPER.DEEPEST_ENABLED' => 'down there'
       }
     end
     it 'unpacks names' do
-      expect(config.foo.deep.deeper.deepest).to eq 'down there'
+      expect(config.foo.deep.deeper.deepest_enabled).to eq 'down there'
       expect(config.foo.bar).to eq 'Bar of Foos'
     end
     it 'still supports packed names' do
@@ -157,6 +156,16 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     expect(config[:baz]).to eq 'Baz'
     config[:baz] = 'New Baz'
     expect(config[:baz]).to eq 'New Baz'
+  end
+
+  context '.example' do
+    subject(:example) { type.example }
+    it 'generates objects that have dotted methods' do
+      expect(example.foo.bar).to be_kind_of(String)
+    end
+    it 'generates objects that have bracket methods' do
+      expect(example[:foo][:bar]).to be_kind_of(String)
+    end
   end
 
   it 'returns an empty array for no errors' do

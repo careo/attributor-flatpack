@@ -26,6 +26,13 @@ module Attributor
         config
       end
 
+      def self.example(context = nil, **values)
+        example = super
+        # Need the @raw to be set as well, since we're using it in fetch
+        example.instance_variable_set(:@raw, @contents.dup)
+        example
+      end
+
       def initialize(data = nil)
         @raw = data
         @contents = {}
@@ -41,12 +48,12 @@ module Attributor
       end
 
       def define_reader(name)
-        attribute = self.class.keys[name]
         context = default_context(name)
         define_singleton_method(name) do
-          get(name, attribute: attribute, context: context)
+          get(name, context: context)
         end
 
+        attribute = self.class.keys[name]
         return unless attribute.type == Attributor::Boolean
 
         define_singleton_method(name.to_s + '?') do
