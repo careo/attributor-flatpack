@@ -23,7 +23,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  let(:data) { { :baz => 'Baz', 'bar' => 'Bar', :foo => { :bar => 'Foobar'}} }
+  let(:data) { { :baz => 'Baz', 'bar' => 'Bar', :foo => { bar: 'Foobar' } } }
   subject(:config) { type.load(data) }
 
   context 'simply loading' do

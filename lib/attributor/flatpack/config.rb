@@ -32,7 +32,7 @@ module Attributor
         example.instance_variable_set(:@raw, @contents.dup)
         example
       end
-      
+
       def initialize(data = nil)
         @raw = data
         @contents = {}
