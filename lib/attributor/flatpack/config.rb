@@ -41,12 +41,12 @@ module Attributor
       end
 
       def define_reader(name)
-        attribute = self.class.keys[name]
         context = default_context(name)
         define_singleton_method(name) do
-          get(name, attribute: attribute, context: context)
+          get(name, context: context)
         end
 
+        attribute = self.class.keys[name]
         return unless attribute.type == Attributor::Boolean
 
         define_singleton_method(name.to_s + '?') do

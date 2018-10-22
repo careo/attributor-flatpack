@@ -72,7 +72,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
             key :bar, String
             key :deep do
               key :deeper do
-                key :deepest, String
+                key :deepest_enabled, String
               end
             end
           end
@@ -81,16 +81,15 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       end
     end
     # rubocop: enable Metrics/BlockLength
-
     let(:data) do
       {
         'FOO.BAR' => 'Bar of Foos',
         'WIDGET_FACTORY' => 'Factory of Widgets',
-        'FOO.DEEP.DEEPER.DEEPEST' => 'down there'
+        'FOO.DEEP.DEEPER.DEEPEST_ENABLED' => 'down there'
       }
     end
     it 'unpacks names' do
-      expect(config.foo.deep.deeper.deepest).to eq 'down there'
+      expect(config.foo.deep.deeper.deepest_enabled).to eq 'down there'
       expect(config.foo.bar).to eq 'Bar of Foos'
     end
     it 'still supports packed names' do
