@@ -29,7 +29,8 @@ module Attributor
       def self.example(context = nil, **values)
         example = super
         # Need the @raw to be set as well, since we're using it in fetch
-        example.instance_variable_set(:@raw, @contents.dup)
+        contents = example.instance_variable_get(:@contents)
+        example.instance_variable_set(:@raw, contents.dup)
         example
       end
 
