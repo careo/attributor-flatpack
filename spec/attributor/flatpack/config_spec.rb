@@ -23,7 +23,18 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  let(:data) { { :baz => 'Baz', 'bar' => 'Bar', :foo => { bar: 'Foobar' } } }
+  let(:data) do
+    {
+      :baz => 'Baz',
+      'bar' => 'Bar',
+      :foo => {
+        bar: 'Foobar'
+      },
+      :implode => true,
+      :explode => false
+    }
+  end
+
   subject(:config) { type.load(data) }
 
   context 'simply loading' do
@@ -32,6 +43,12 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
     it 'loads strings' do
       expect(config.bar).to eq 'Bar'
+    end
+    it 'loads boolean true' do
+      expect(config.implode).to be(true)
+    end
+    it 'loads boolean false' do
+      expect(config.explode).to be(false)
     end
   end
 
