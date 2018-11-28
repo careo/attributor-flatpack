@@ -108,11 +108,11 @@ module Attributor
       def fetch(key)
         return @raw[key] if @raw.key?(key)
 
-        _found_key, found_value = @raw.find do |(k, _v)|
+        found_key, found_value = @raw.find do |(k, _v)|
           k.to_s.casecmp(key.to_s).zero?
         end
 
-        return found_value if found_value
+        return found_value if found_key
 
         yield if block_given?
       end
