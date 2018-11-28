@@ -56,6 +56,15 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  context 'dumping to a hash' do
+    subject(:dumped) { config.dump }
+    its(%i[baz]) { should eq 'Baz' }
+    its(%i[bar]) { should eq 'Bar' }
+    its(%i[foo bar]) { should eq 'Foobar' }
+    its(%i[finale implode]) { should be true }
+    its(%i[finale explode]) { should be false }
+  end
+
   context 'case insensitivity' do
     let(:data) { { 'BAZ' => 'Baz', :Bar => 'Bar' } }
     it 'loads from uppercase' do
