@@ -176,6 +176,12 @@ module Attributor
           end
         end.flatten
       end
+
+      def dump(**opts)
+        # quick hack to ensure we load all the values into @contents
+        self.validate
+        super
+      end
     end
   end
 end
