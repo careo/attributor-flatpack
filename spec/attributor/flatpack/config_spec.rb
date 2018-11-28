@@ -33,8 +33,8 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         bar: 'Foobar'
       },
       :finale => {
-        "implode" => true,
-        "explode" => false
+        'implode' => true,
+        'explode' => false
       }
     }
   end
