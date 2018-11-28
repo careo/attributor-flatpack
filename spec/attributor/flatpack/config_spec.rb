@@ -17,8 +17,10 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         end
         key :widget_factory, String
         key :defaults, String, default: 'Work'
-        key :explode, Attributor::Boolean
-        key :implode, Attributor::Boolean
+        key :finale do
+          key :explode, Attributor::Boolean
+          key :implode, Attributor::Boolean
+        end
       end
     end
   end
@@ -30,8 +32,10 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       :foo => {
         bar: 'Foobar'
       },
-      :implode => true,
-      :explode => false
+      :finale => {
+        implode: true,
+        explode: false
+      }
     }
   end
 
@@ -45,10 +49,10 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       expect(config.bar).to eq 'Bar'
     end
     it 'loads boolean true' do
-      expect(config.implode).to be(true)
+      expect(config.finale.implode).to be(true)
     end
     it 'loads boolean false' do
-      expect(config.explode).to be(false)
+      expect(config.finale.explode).to be(false)
     end
   end
 
@@ -67,7 +71,9 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       {
         'FOO_BAR' => 'Bar of Foos',
         'WIDGET_FACTORY' => 'Factory of Widgets',
-        'FOO_DEEP_DEEPER_DEEPEST' => 'down there'
+        'FOO_DEEP_DEEPER_DEEPEST' => 'down there',
+        'FINALE_EXPLODE' => 'false',
+        'FINALE_IMPLODE' => 'true'
       }
     end
     it 'unpacks names' do
@@ -76,6 +82,10 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
     it 'still supports packed names' do
       expect(config.widget_factory).to eq 'Factory of Widgets'
+    end
+    it 'unpacks booleans' do
+      expect(config.finale.explode).to be(false)
+      expect(config.finale.implode).to be(true)
     end
   end
 
@@ -143,13 +153,13 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
     end
   end
   context 'boolean readers' do
-    let(:data) { { explode: true, implode: false } }
+    let(:data) { { finale: { explode: true, implode: false } } }
     it 'creates handy ? methods' do
-      expect(config.explode).to be(true)
-      expect(config.implode).to be(false)
+      expect(config.finale.explode).to be(true)
+      expect(config.finale.implode).to be(false)
 
-      expect(config.explode?).to be(true)
-      expect(config.implode?).to be(false)
+      expect(config.finale.explode?).to be(true)
+      expect(config.finale.implode?).to be(false)
     end
   end
 
