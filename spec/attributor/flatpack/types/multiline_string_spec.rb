@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Attributor::Flatpack::MultilineString do
-
   subject(:type) { Attributor::Flatpack::MultilineString }
 
   context '.example' do
@@ -21,15 +20,15 @@ describe Attributor::Flatpack::MultilineString do
       it 'should not modify multiline strings with newlines' do
         value = "-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEI\n3abcdefghijklmnop==\n-----END EC PRIVATE KEY-----"
         expected_value = "-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEI\n3abcdefghijklmnop==\n-----END EC PRIVATE KEY-----"
-        expect(type.load(value)).to eq(expected_value) 
-      end 
+        expect(type.load(value)).to eq(expected_value)
+      end
 
       it 'should modify multiline strings with escaped newlines' do
-        value = "-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\n3abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----"
+        value = '-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\n3abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----'
         expected_value = "-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEI\n3abcdefghijklmnop==\n-----END EC PRIVATE KEY-----"
-        expect(type.load(value)).to eq(expected_value) 
-      end 
-    end 
+        expect(type.load(value)).to eq(expected_value)
+      end
+    end
 
     context 'for values that cannot be handled as a string' do
       let(:value) { [1] }
