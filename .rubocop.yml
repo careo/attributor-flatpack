@@ -13,8 +13,13 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Enabled: false
 Metrics/LineLength:
-  Max: 85
+  Max: 160
+  Exclude:
+    - "spec/**/*.rb"
 Style/RedundantSelf:
   Enabled: false
 Style/DoubleNegation:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
