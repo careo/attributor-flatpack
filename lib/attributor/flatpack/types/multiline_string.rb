@@ -12,7 +12,7 @@ module Attributor
       end
 
       def self.example(_context = nil, options: {})
-        "-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----"
+        "-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\n3abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----"
       end
 
     end

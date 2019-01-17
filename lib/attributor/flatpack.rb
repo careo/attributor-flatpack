@@ -5,7 +5,7 @@ require 'attributor/flatpack/config_dsl_compiler'
 
 require 'attributor/flatpack/config'
 require 'attributor/flatpack/undefined_key'
-Dir["attributor/flatpack/types/*.rb"].each {|file| require file }
+require 'attributor/flatpack/types/multiline_string'
 
 module Attributor
   module Flatpack
