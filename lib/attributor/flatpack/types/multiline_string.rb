@@ -4,17 +4,15 @@
 module Attributor
   module Flatpack
     class MultilineString < Attributor::String
-
       def self.load(value, context = Attributor::DEFAULT_ROOT_CONTEXT, **options)
         value.gsub('\\n', "\n")
       rescue StandardError
         super
       end
 
-      def self.example(_context = nil, options: {})
-        "-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\n3abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----"
+      def self.example(*)
+        '-----BEGIN EC PRIVATE KEY-----\\nMIHcAgEBBEI\\n3abcdefghijklmnop==\\n-----END EC PRIVATE KEY-----'
       end
-
     end
   end
 end
