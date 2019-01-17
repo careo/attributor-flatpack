@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
+describe Attributor::Flatpack::Config do
   let(:type) do
     Class.new(Attributor::Flatpack::Config) do
       keys do
@@ -97,8 +97,6 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
       expect(config.finale.implode).to be(true)
     end
   end
-
-  # rubocop: disable Metrics/BlockLength
   context 'unpacking names using a custom separator' do
     let(:type) do
       Class.new(Attributor::Flatpack::Config) do
@@ -116,7 +114,7 @@ describe Attributor::Flatpack::Config do # rubocop:disable Metrics/BlockLength
         end
       end
     end
-    # rubocop: enable Metrics/BlockLength
+
     let(:data) do
       {
         'FOO.BAR' => 'Bar of Foos',
