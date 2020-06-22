@@ -1,5 +1,9 @@
 # attributor-flatpack changelog
 
+## 1.4
+
+- Respect `allow_extra: true` option when validating.
+
 ## 1.3
 
 - Add `Attributor::Flatpack::MultilineString` type to handle multiline strings from environment variables.
