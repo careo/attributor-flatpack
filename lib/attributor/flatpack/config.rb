@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Attributor
   module Flatpack
     class Config < Attributor::Hash
-      @separator = '_'.freeze
+      @separator = '_'
       @key_type = Symbol
 
       class << self

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'attributor'
 
 require 'attributor/flatpack/version'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Sometimes a multline string when read in by ruby has escaped newlines, sometimes not.
 # This type will remove any escaping of newline from a string.
 

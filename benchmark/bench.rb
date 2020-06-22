@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 Bundler.require
 
@@ -26,6 +28,7 @@ ConfigStruct = Struct.new(:home, :path)
 
 class Poro
   attr_accessor :home, :path
+
   def initialize(home, path)
     @home = home
     @path = path
