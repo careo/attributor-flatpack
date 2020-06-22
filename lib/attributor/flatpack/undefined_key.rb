@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Attributor
   module Flatpack
     class UndefinedKey < Attributor::LoadError

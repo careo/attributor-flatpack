@@ -1,18 +1,13 @@
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.7
+  NewCops: enable
 Style/Documentation:
   Enabled: false
-  Exclude:
-    - lib/attributor/flatpack/version.rb
-    - lib/attributor/flatpack.rb
-    - lib/attributor/flatpack/config.rb
-    - lib/attributor/flatpack/config_dsl_compiler.rb
-    - lib/attributor/flatpack/undefined_key.rb
 Metrics/MethodLength:
   Enabled: false
 Metrics/ClassLength:
   Enabled: false
-Metrics/LineLength:
+Layout/LineLength:
   Max: 160
   Exclude:
     - "spec/**/*.rb"
@@ -23,3 +18,7 @@ Style/DoubleNegation:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
+Style/RedundantFetchBlock:
+  Enabled: false
+Style/HashEachMethods:
+  Enabled: false
