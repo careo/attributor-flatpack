@@ -21,6 +21,7 @@ module Attributor
           @separator = sep
         end
         klass.options[:dsl_compiler] = ConfigDSLCompiler
+        klass.options[:allow_extra] = true
       end
 
       def self.from_hash(object, _context, **_opts)
@@ -120,7 +121,7 @@ module Attributor
       end
 
       def subselect(prefix)
-        prefix_match = /^#{prefix.to_s}#{self.class.separator}?(.*)/i
+        prefix_match = /^#{prefix}#{self.class.separator}?(.*)/i
 
         selected = @raw.collect do |(k, v)|
           if (match = prefix_match.match(k))
@@ -150,7 +151,8 @@ module Attributor
       # shamelessly copied from Attributor::Model's #validate :(
       def validate(context = Attributor::DEFAULT_ROOT_CONTEXT)
         self.validate_attributes(context) +
-          self.validate_requirements(context)
+          self.validate_requirements(context) +
+          self.validate_keys(context)
       end
 
       def validate_attributes(context)
@@ -165,6 +167,16 @@ module Attributor
         self.class.requirements.each_with_object([]) do |req, errors|
           errors.push(req.validate(@contents, context))
         end
+      end
+
+      def validate_keys(context)
+        return [] if self.class.options[:allow_extra]
+
+        errors = (@raw.keys.collect(&:to_s) - self.class.keys.keys.collect(&:to_s)).collect do |extra_key|
+          "Unknown key received: #{extra_key.inspect} for #{Attributor.humanize_context(context)}"
+        end
+
+        errors
       end
 
       def pretty_print(context: [])

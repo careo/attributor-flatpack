@@ -207,4 +207,37 @@ describe Attributor::Flatpack::Config do
   it 'returns an empty array for no errors' do
     expect(config.validate).to eq []
   end
+
+  context '#validate' do
+    let(:type) do
+      Class.new(Attributor::Flatpack::Config) do
+        keys allow_extra: false do
+          key :baz, String
+          key :foo do
+            key :bar, String
+          end
+        end
+      end
+    end
+
+    subject(:errors) { config.validate }
+
+    context 'without extra keys in the data' do
+      let(:data) { { baz: '1' } }
+      it { should be_empty }
+    end
+    context 'with extra keys in the top-level data' do
+      let(:data) { { invalid: '1' } }
+      subject(:errors) { config.validate }
+
+      it { should_not be_empty }
+    end
+
+    context 'recursively checks for extra keys' do
+      let(:data) { { foo: { still_invalid: '1' } } }
+      subject(:errors) { config.validate }
+
+      it { should_not be_empty }
+    end
+  end
 end

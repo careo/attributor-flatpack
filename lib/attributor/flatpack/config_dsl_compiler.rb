@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Attributor
   module Flatpack
     class ConfigDSLCompiler < Attributor::HashDSLCompiler
@@ -10,6 +12,7 @@ module Attributor
         if attr_type.nil? && block
           sep = target.separator
           # Ensure class for subkeys uses the same separator as the parent
+          opts[:allow_extra] = options[:allow_extra]
           attr_type = ::Class.new(Attributor::Flatpack::Config) do
             separator sep
           end
