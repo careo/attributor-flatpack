@@ -121,7 +121,7 @@ module Attributor
       end
 
       def subselect(prefix)
-        prefix_match = /^#{prefix}#{self.class.separator}?(.*)/i
+        prefix_match = /^#{prefix}#{::Regexp.escape(self.class.separator)}(.*)/i
 
         selected = @raw.collect do |(k, v)|
           if (match = prefix_match.match(k))

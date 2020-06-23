@@ -1,5 +1,9 @@
 # attributor-flatpack changelog
 
+## 1.4.1
+
+- Fix regexp for `Config#subselect` not escaping the separator and not matching properly
+
 ## 1.4
 
 - Respect `allow_extra: true` option when validating.
