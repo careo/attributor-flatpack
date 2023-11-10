@@ -240,4 +240,16 @@ describe Attributor::Flatpack::Config do
       it { should_not be_empty }
     end
   end
+
+  context 'with data with invalid keys' do
+    let(:data) do
+      {
+        { foo: :baz } => :bar
+        :foo => :bar
+      }
+    end
+    it 'should fail to initialize' do
+      expect { subject }.to raise_error(ArgumentError)
+    end
+  end
 end

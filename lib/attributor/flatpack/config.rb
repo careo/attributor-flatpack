@@ -37,7 +37,19 @@ module Attributor
         example
       end
 
+      def self.validate_data(data)
+        return true unless data.respond_to?(:keys)
+
+        data.keys.each do |k|
+          /(.)*/.match?(k)
+        rescue TypeError => e
+          raise ArgumentError, 'keys must be symboles or strings'
+        end
+      end
+
       def initialize(data = nil)
+        self.class.validate_data data
+
         @raw = data
         @contents = {}
 
@@ -171,7 +183,7 @@ module Attributor
 
       def validate_keys(context)
         return [] if self.class.options[:allow_extra]
-
+        
         errors = (@raw.keys.collect(&:to_s) - self.class.keys.keys.collect(&:to_s)).collect do |extra_key|
           "Unknown key received: #{extra_key.inspect} for #{Attributor.humanize_context(context)}"
         end
